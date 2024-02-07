@@ -28,16 +28,16 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   @override
   Widget build(BuildContext context) {
     final width=MediaQuery.sizeOf(context).width*1;
-    final height=MediaQuery.sizeOf(context).height*1;
+    final height=MediaQuery.sizeOf(context).height*.6;
     return Scaffold(
       appBar: AppBar(
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           children: [
             SizedBox(
-              height: 50,
+              height: 40,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                   itemCount: categoriesNameList.length,
@@ -46,15 +46,14 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   onTap: (){
                     categoryName=categoriesNameList[index];
                     setState(() {
-
                     });
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(right: 12),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: categoryName == categoriesNameList[index]?Colors.blue.shade200:Colors.grey,
-                        borderRadius: BorderRadius.circular(20),
+                        color: categoryName == categoriesNameList[index]?Colors.green.shade200:Colors.black12,
+                        borderRadius: BorderRadius.circular(10),
                       ),
                       child: Center(child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -71,7 +70,6 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             ),
             SizedBox(height: height*.02,),
             Expanded(
-
               child: FutureBuilder<CategoriesNewsModel>(
                   future: newsViewModelApi.fetchCategoriesNewsApi(context, categoryName),
                   builder: (BuildContext context, snapshot){
@@ -82,7 +80,6 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       );
                     }else{
                       return ListView.builder(
-
                           itemCount: snapshot.data!.articles!.length,
                           scrollDirection: Axis.vertical,
                           itemBuilder: (context,index){
@@ -92,10 +89,10 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                               child: Row(
                                 children: [
                                   ClipRRect(
-                                    borderRadius: BorderRadius.circular(15),
+                                    borderRadius: BorderRadius.circular(10),
                                     child: CachedNetworkImage(
-                                      height:height*.22,
-                                      width:width*.35,
+                                      height:height*.20,
+                                      width:width*.25,
                                       imageUrl: snapshot.data!.articles![index].urlToImage.toString(),
                                       fit: BoxFit.cover,
                                       placeholder: (context,url)=>Container(child: spinKit2,),
@@ -111,7 +108,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                         maxLines: 3,
                                         style: GoogleFonts.aBeeZee(
                                           fontSize: 16,
-                                          color: Colors.black54,
+                                          color: Colors.black,
                                           fontWeight: FontWeight.w700
 
                                         ),),

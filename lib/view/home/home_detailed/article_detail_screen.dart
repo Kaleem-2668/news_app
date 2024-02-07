@@ -1,8 +1,7 @@
-import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
@@ -47,33 +46,31 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
       ),
       body: Stack(
         children: [
-          Container(
-            child: Container(
-              // padding: EdgeInsets.symmetric(horizontal: Kheight * 0.02),
-              height: Kheight * 0.45,
-              width: Kwidth,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30)),
-                child: CachedNetworkImage(
-                  imageUrl: "${widget.urlToImage}",
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) =>const  CircularProgressIndicator(),
-                  errorWidget: (context, url, error) =>  const Icon(Icons.error),
-                ),
+          SizedBox(
+            // padding: EdgeInsets.symmetric(horizontal: Kheight * 0.02),
+            height: Kheight * 0.45,
+            width: Kwidth,
+            child: ClipRRect(
+              borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(10)),
+              child: CachedNetworkImage(
+                imageUrl: "${widget.urlToImage}",
+                fit: BoxFit.cover,
+                placeholder: (context, url) =>const  CircularProgressIndicator(),
+                errorWidget: (context, url, error) =>  const Icon(Icons.error),
               ),
             ),
           ),
           Container(
             margin: EdgeInsets.only(top: Kheight * 0.4),
-            padding: EdgeInsets.only(top: 20, right: 20, left: 20),
+            padding: const EdgeInsets.only(top: 15, right: 15, left: 15),
             height: Kheight * 0.6,
             decoration:const  BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30))),
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20))),
             child: ListView(
               children: [
                 Text('${widget.newsName}',
@@ -86,16 +83,14 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: Container(
-                        child: Text(
-                          '${widget.title}',
-                          softWrap: true,
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.poppins(
-                              fontSize: 13,
-                              color: Colors.blueAccent,
-                              fontWeight: FontWeight.w600),
-                        ),
+                      child: Text(
+                        '${widget.title}',
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.poppins(
+                            fontSize: 13,
+                            color: Colors.blueAccent,
+                            fontWeight: FontWeight.w600),
                       ),
                     ),
                     Text(

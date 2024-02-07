@@ -8,7 +8,7 @@ import '../../models/categories_news_model.dart';
 import '../../models/news_channel_headlines_model.dart';
 import '../../view_model/news_view_model.dart';
 import '../category/categories_screen.dart';
-import 'home_detailed/news_detailed_screen.dart';
+import 'home_detailed/article_detail_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -32,13 +32,14 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size(0, 59),
+        preferredSize: const Size(0, 40),
         child: AppBar(
           leading: IconButton(
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const CategoriesScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const CategoriesScreen()),
               );
             },
             icon: Image.asset(
@@ -49,7 +50,8 @@ class _HomePageState extends State<HomePage> {
           ),
           title: Text(
             'News',
-            style: GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.w700),
+            style:
+                GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.w700),
           ),
           actions: [
             PopupMenuButton<FilterList>(
@@ -58,7 +60,24 @@ class _HomePageState extends State<HomePage> {
                 if (FilterList.bbcNews == item) {
                   name = "bbc-news";
                 }
-                // Handle other cases similarly
+                if (FilterList.aryNews.name == item.name) {
+                  name = "ary-news";
+                }
+                if (FilterList.alJazeera.name == item.name) {
+                  name = "al-jazeera-english";
+                }
+                if (FilterList.cnn.name == item.name) {
+                  name = "cnn";
+                }
+                if (FilterList.independent.name == item.name) {
+                  name = "independent";
+                }
+                if (FilterList.reuters.name == item.name) {
+                  name = "reuters";
+                }
+                if (FilterList.reuters.name == item.name) {
+                  name = "nbc-news";
+                }
 
                 setState(() {
                   selectedItem = item;
@@ -69,6 +88,16 @@ class _HomePageState extends State<HomePage> {
                   value: FilterList.bbcNews,
                   child: Text("BBC News"),
                 ),
+                const PopupMenuItem<FilterList>(
+                    value: FilterList.aryNews, child: Text("ARY News")),
+                const PopupMenuItem<FilterList>(
+                    value: FilterList.alJazeera, child: Text("Al-Jazeera")),
+                const PopupMenuItem<FilterList>(
+                    value: FilterList.cnn, child: Text("CNN")),
+                const PopupMenuItem<FilterList>(
+                    value: FilterList.independent, child: Text("Independent")),
+                const PopupMenuItem<FilterList>(
+                    value: FilterList.reuters, child: Text("reuters")),
                 // Add other PopupMenuItems
               ],
             ),
@@ -77,33 +106,48 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Column(
         children: [
-          Container(
-            height: height * 0.5,
+          SizedBox(
+            height: height * 0.3,
             child: FutureBuilder<NewsChannelHeadlinesModel>(
-                future: newsViewModelApi.fetchNewChannelHeadLinesApi(context,name),
-                builder: (BuildContext context, snapshot){
-                  if(snapshot.connectionState == ConnectionState.waiting){
+                future:
+                    newsViewModelApi.fetchNewChannelHeadLinesApi(context, name),
+                builder: (BuildContext context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
                     return const SpinKitCircle(
                       color: Colors.black,
                     );
-                  }else{
+                  } else {
                     return ListView.builder(
                         itemCount: snapshot.data!.articles!.length,
                         scrollDirection: Axis.horizontal,
-                        itemBuilder: (context,index){
-                          DateTime dateTime = DateTime.parse(snapshot.data!.articles![index].publishedAt.toString());
+                        itemBuilder: (context, index) {
+                          DateTime dateTime = DateTime.parse(snapshot
+                              .data!.articles![index].publishedAt
+                              .toString());
                           return InkWell(
-                            onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => ArticleDetailsScreen(
-                                id: snapshot.data!.articles![index].source!.id,
-                                newsName: snapshot.data!.articles![index].source!.name,
-                                title: snapshot.data!.articles![index].title,
-                                publishedAt: format.format(dateTime),
-                                urlToImage: snapshot.data!.articles![index].urlToImage,
-                                author: snapshot.data!.articles![index].author,
-                                content: snapshot.data!.articles![index].content,
-                                description: snapshot.data!.articles![index].description,
-                              )));
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ArticleDetailsScreen(
+                                            id: snapshot.data!.articles![index]
+                                                .source!.id,
+                                            newsName: snapshot.data!
+                                                .articles![index].source!.name,
+                                            title: snapshot
+                                                .data!.articles![index].title,
+                                            publishedAt:
+                                                format.format(dateTime),
+                                            urlToImage: snapshot.data!
+                                                .articles![index].urlToImage,
+                                            author: snapshot
+                                                .data!.articles![index].author,
+                                            content: snapshot
+                                                .data!.articles![index].content,
+                                            description: snapshot.data!
+                                                .articles![index].description,
+                                          )));
                             },
                             child: Padding(
                               padding: const EdgeInsets.only(top: 10),
@@ -111,7 +155,7 @@ class _HomePageState extends State<HomePage> {
                                 alignment: Alignment.center,
                                 children: [
                                   Container(
-                                    height: height * 0.6,
+                                    height: height * 0.4,
                                     width: width * .9,
                                     padding: EdgeInsets.symmetric(
                                       horizontal: height * .01,
@@ -119,10 +163,19 @@ class _HomePageState extends State<HomePage> {
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(16),
                                       child: CachedNetworkImage(
-                                        imageUrl: snapshot.data!.articles![index].urlToImage.toString(),
+                                        imageUrl: snapshot
+                                            .data!.articles![index].urlToImage
+                                            .toString(),
                                         fit: BoxFit.cover,
-                                        placeholder: (context,url) => Container(child: spinKit2,),
-                                        errorWidget: (context,url,error) => const Icon(Icons.error_outline,color: Colors.red,),
+                                        placeholder: (context, url) =>
+                                            Container(
+                                          child: spinKit2,
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(
+                                          Icons.error_outline,
+                                          color: Colors.red,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -137,40 +190,57 @@ class _HomePageState extends State<HomePage> {
                                       child: Container(
                                         padding: const EdgeInsets.all(20),
                                         alignment: Alignment.center,
-                                        height: height * 0.35,
+                                        height: height * 0.20,
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
                                           children: [
                                             SizedBox(
                                               width: width * 0.7,
-                                              child: Text(snapshot.data!.articles![index].title.toString(),
+                                              child: Text(
+                                                snapshot.data!.articles![index]
+                                                    .title
+                                                    .toString(),
                                                 maxLines: 3,
                                                 style: GoogleFonts.aBeeZee(
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize: 22,
-                                                    color: Colors.white
-                                                ),
+                                                    fontSize: 18,
+                                                    color: Colors.white),
                                               ),
                                             ),
                                             const Spacer(),
                                             SizedBox(
                                               width: width * 0.7,
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
                                                 children: [
                                                   Flexible(
-                                                    child: Text(snapshot.data!.articles![index].source!.name.toString()
-                                                      ,style: GoogleFonts.aBeeZee(
-                                                          fontSize: 16,
-                                                          fontWeight: FontWeight.bold,
-                                                          color: Colors.red
-                                                      ),
+                                                    child: Text(
+                                                      snapshot
+                                                          .data!
+                                                          .articles![index]
+                                                          .source!
+                                                          .name
+                                                          .toString(),
+                                                      style:
+                                                          GoogleFonts.aBeeZee(
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color:
+                                                                  Colors.red),
                                                     ),
                                                   ),
-                                                  Text(format.format(dateTime),style: const TextStyle(
-                                                      color: Colors.white
-                                                  ),),
+                                                  Text(
+                                                    format.format(dateTime),
+                                                    style: const TextStyle(
+                                                        color: Colors.white),
+                                                  ),
                                                 ],
                                               ),
                                             ),
@@ -183,78 +253,123 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           );
-                        }
-                    );
+                        });
                   }
-                }
-            ),
+                }),
           ),
           SizedBox(height: height * 0.01),
           Expanded(
             child: SizedBox(
               height: height * 0.5,
-              child:FutureBuilder<CategoriesNewsModel>(
-                  future: newsViewModelApi.fetchCategoriesNewsApi(context,"General"),
-                  builder: (BuildContext context, snapshot){
-                    if(snapshot.connectionState == ConnectionState.waiting){
+              child: FutureBuilder<CategoriesNewsModel>(
+                  future: newsViewModelApi.fetchCategoriesNewsApi(
+                      context, "General"),
+                  builder: (BuildContext context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
                       return const SpinKitCircle(
                         color: Colors.amberAccent,
                       );
-                    }else{
+                    } else {
                       return ListView.builder(
                           itemCount: snapshot.data!.articles!.length,
                           shrinkWrap: true,
-                          itemBuilder: (context,index){
-                            DateTime dateTime = DateTime.parse(snapshot.data!.articles![index].publishedAt.toString());
+                          itemBuilder: (context, index) {
+                            DateTime dateTime = DateTime.parse(snapshot
+                                .data!.articles![index].publishedAt
+                                .toString());
                             return InkWell(
-                              onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => ArticleDetailsScreen(
-                                  id: snapshot.data!.articles![index].source!.id,
-                                  newsName: snapshot.data!.articles![index].source!.name,
-                                  title: snapshot.data!.articles![index].title,
-                                  publishedAt: format.format(dateTime),
-                                  urlToImage: snapshot.data!.articles![index].urlToImage,
-                                  author: snapshot.data!.articles![index].author,
-                                  content: snapshot.data!.articles![index].content,
-                                  description: snapshot.data!.articles![index].description,
-                                )));
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ArticleDetailsScreen(
+                                              id: snapshot.data!
+                                                  .articles![index].source!.id,
+                                              newsName: snapshot
+                                                  .data!
+                                                  .articles![index]
+                                                  .source!
+                                                  .name,
+                                              title: snapshot
+                                                  .data!.articles![index].title,
+                                              publishedAt:
+                                                  format.format(dateTime),
+                                              urlToImage: snapshot.data!
+                                                  .articles![index].urlToImage,
+                                              author: snapshot.data!
+                                                  .articles![index].author,
+                                              content: snapshot.data!
+                                                  .articles![index].content,
+                                              description: snapshot.data!
+                                                  .articles![index].description,
+                                            )));
                               },
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 5,horizontal: 10),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 10),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
                                       child: CachedNetworkImage(
-                                        imageUrl: snapshot.data!.articles![index].urlToImage.toString(),
+                                        imageUrl: snapshot
+                                            .data!.articles![index].urlToImage
+                                            .toString(),
                                         fit: BoxFit.cover,
-                                        height: height * 0.25,
-                                        width: width * 0.35,
-                                        placeholder: (context,url) => Container(child: spinKit2,),
-                                        errorWidget: (context,url,error) => const Icon(Icons.error_outline,color: Colors.red,),
+                                        height: height * 0.15,
+                                        width: width * 0.25,
+                                        placeholder: (context, url) =>
+                                            Container(
+                                          child: spinKit2,
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(
+                                          Icons.error_outline,
+                                          color: Colors.red,
+                                        ),
                                       ),
                                     ),
                                     Expanded(
                                       child: Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10),
                                         child: SizedBox(
-                                          height: height * 0.23,
+                                          height: height * 0.15,
                                           child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               Flexible(
-                                                child: Text(snapshot.data!.articles![index].title.toString(),style: GoogleFonts.aBeeZee(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                ),),
+                                                child: Center(
+                                                  child: Text(
+                                                    snapshot.data!
+                                                        .articles![index].title
+                                                        .toString(),
+                                                    style: GoogleFonts.aBeeZee(
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
                                               Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
-                                                  Text(snapshot.data!.articles![index].source!.name.toString()),
-                                                  Flexible(child: Text(format.format(dateTime))),
-
+                                                  Text(snapshot
+                                                      .data!
+                                                      .articles![index]
+                                                      .source!
+                                                      .name
+                                                      .toString()),
+                                                  Flexible(
+                                                      child: Text(format
+                                                          .format(dateTime))),
                                                 ],
                                               ),
                                             ],
@@ -266,11 +381,9 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                             );
-                          }
-                      );
+                          });
                     }
-                  }
-              ),
+                  }),
             ),
           ),
         ],
