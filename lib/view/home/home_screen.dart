@@ -31,9 +31,11 @@ class _HomePageState extends State<HomePage> {
     final height = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      backgroundColor: Colors.black38,
       appBar: PreferredSize(
         preferredSize: const Size(0, 40),
         child: AppBar(
+          backgroundColor: Colors.black12,
           leading: IconButton(
             onPressed: () {
               Navigator.push(
@@ -45,67 +47,80 @@ class _HomePageState extends State<HomePage> {
             icon: Image.asset(
               'assets/images/category_icon.png',
               height: 30,
-              width: 30,
+              width: 30,color: Colors.white70,
             ),
           ),
           title: Text(
             'News',
             style:
-                GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.w700),
+                GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.w700,color: Colors.white70),
           ),
           actions: [
-            PopupMenuButton<FilterList>(
-              initialValue: selectedItem,
-              onSelected: (FilterList item) {
-                if (FilterList.bbcNews == item) {
-                  name = "bbc-news";
-                }
-                if (FilterList.aryNews.name == item.name) {
-                  name = "ary-news";
-                }
-                if (FilterList.alJazeera.name == item.name) {
-                  name = "al-jazeera-english";
-                }
-                if (FilterList.cnn.name == item.name) {
-                  name = "cnn";
-                }
-                if (FilterList.independent.name == item.name) {
-                  name = "independent";
-                }
-                if (FilterList.reuters.name == item.name) {
-                  name = "reuters";
-                }
-                if (FilterList.reuters.name == item.name) {
-                  name = "nbc-news";
-                }
 
-                setState(() {
-                  selectedItem = item;
-                });
-              },
-              itemBuilder: (context) => <PopupMenuEntry<FilterList>>[
-                const PopupMenuItem<FilterList>(
-                  value: FilterList.bbcNews,
-                  child: Text("BBC News"),
-                ),
-                const PopupMenuItem<FilterList>(
-                    value: FilterList.aryNews, child: Text("ARY News")),
-                const PopupMenuItem<FilterList>(
-                    value: FilterList.alJazeera, child: Text("Al-Jazeera")),
-                const PopupMenuItem<FilterList>(
-                    value: FilterList.cnn, child: Text("CNN")),
-                const PopupMenuItem<FilterList>(
-                    value: FilterList.independent, child: Text("Independent")),
-                const PopupMenuItem<FilterList>(
-                    value: FilterList.reuters, child: Text("reuters")),
-                // Add other PopupMenuItems
-              ],
+            SizedBox(
+              width: MediaQuery.of(context).size.width*.15,
+              child: PopupMenuButton<FilterList>(
+                initialValue: selectedItem,
+                onSelected: (FilterList item) {
+                  if (FilterList.bbcNews == item) {
+                    name = "bbc-news";
+                  }
+                  if (FilterList.aryNews.name == item.name) {
+                    name = "ary-news";
+                  }
+                  if (FilterList.alJazeera.name == item.name) {
+                    name = "al-jazeera-english";
+                  }
+                  if (FilterList.cnn.name == item.name) {
+                    name = "cnn";
+                  }
+                  if (FilterList.independent.name == item.name) {
+                    name = "independent";
+                  }
+                  if (FilterList.reuters.name == item.name) {
+                    name = "reuters";
+                  }
+                  if (FilterList.reuters.name == item.name) {
+                    name = "nbc-news";
+                  }
+
+                  setState(() {
+                    selectedItem = item;
+                  });
+                },
+                itemBuilder: (context) => <PopupMenuEntry<FilterList>>[
+                  const PopupMenuItem<FilterList>(
+                    value: FilterList.bbcNews,
+                    child: SizedBox(
+                      width: 150,
+                        child: Text("BBC News",style: TextStyle(color: Colors.white),)),
+                  ),
+                   const PopupMenuItem<FilterList>(
+                      value: FilterList.aryNews, child: Text("ARY News",style: TextStyle(color: Colors.white),)),
+                   const PopupMenuItem<FilterList>(
+                      value: FilterList.alJazeera, child: Text("Al-Jazeera",style: TextStyle(color: Colors.white),)),
+                   const PopupMenuItem<FilterList>(
+                      value: FilterList.cnn, child: Text("CNN",style: TextStyle(color: Colors.white),)),
+                   const PopupMenuItem<FilterList>(
+                      value: FilterList.independent, child: Text("Independent",style: TextStyle(color: Colors.white),)),
+                  const PopupMenuItem<FilterList>(
+                      value: FilterList.reuters, child: Text("reuters",style: TextStyle(color: Colors.white),)),
+                  // Add other PopupMenuItems
+                ],
+                icon: const Icon(Icons.menu, color: Colors.white70,size: 30,), // Change the dropdown arrow color
+
+                color: Colors.black,
+              ),
             ),
           ],
         ),
       ),
       body: Column(
         children: [
+          // const Divider(
+          //   thickness: .3,
+          //   color: Colors.white,
+          // ),
           SizedBox(
             height: height * 0.3,
             child: FutureBuilder<NewsChannelHeadlinesModel>(
@@ -114,7 +129,7 @@ class _HomePageState extends State<HomePage> {
                 builder: (BuildContext context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const SpinKitCircle(
-                      color: Colors.black,
+                      color: Colors.white,
                     );
                   } else {
                     return ListView.builder(
@@ -258,59 +273,58 @@ class _HomePageState extends State<HomePage> {
                 }),
           ),
           SizedBox(height: height * 0.01),
+          const Divider(
+            thickness: .3,
+            color: Colors.white,
+          ),
           Expanded(
             child: SizedBox(
               height: height * 0.5,
               child: FutureBuilder<CategoriesNewsModel>(
-                  future: newsViewModelApi.fetchCategoriesNewsApi(
-                      context, "General"),
-                  builder: (BuildContext context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const SpinKitCircle(
-                        color: Colors.amberAccent,
-                      );
-                    } else {
-                      return ListView.builder(
-                          itemCount: snapshot.data!.articles!.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            DateTime dateTime = DateTime.parse(snapshot
-                                .data!.articles![index].publishedAt
-                                .toString());
-                            return InkWell(
+                future: newsViewModelApi.fetchCategoriesNewsApi(context, "General"),
+                builder: (BuildContext context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const SpinKitCircle(
+                      color: Colors.white,
+                    );
+                  } else {
+                    return ListView.builder(
+                      itemCount: snapshot.data!.articles!.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        DateTime dateTime = DateTime.parse(
+                          snapshot.data!.articles![index].publishedAt.toString(),
+                        );
+                        return Column(
+                          children: [
+                            InkWell(
                               onTap: () {
                                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ArticleDetailsScreen(
-                                              id: snapshot.data!
-                                                  .articles![index].source!.id,
-                                              newsName: snapshot
-                                                  .data!
-                                                  .articles![index]
-                                                  .source!
-                                                  .name,
-                                              title: snapshot
-                                                  .data!.articles![index].title,
-                                              publishedAt:
-                                                  format.format(dateTime),
-                                              urlToImage: snapshot.data!
-                                                  .articles![index].urlToImage,
-                                              author: snapshot.data!
-                                                  .articles![index].author,
-                                              content: snapshot.data!
-                                                  .articles![index].content,
-                                              description: snapshot.data!
-                                                  .articles![index].description,
-                                            )));
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ArticleDetailsScreen(
+                                      id: snapshot.data!.articles![index].source!.id,
+                                      newsName:
+                                      snapshot.data!.articles![index].source!.name,
+                                      title: snapshot.data!.articles![index].title,
+                                      publishedAt: format.format(dateTime),
+                                      urlToImage:
+                                      snapshot.data!.articles![index].urlToImage,
+                                      author: snapshot.data!.articles![index].author,
+                                      content: snapshot.data!.articles![index].content,
+                                      description:
+                                      snapshot.data!.articles![index].description,
+                                    ),
+                                  ),
+                                );
                               },
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 10),
+                                  vertical: 5,
+                                  horizontal: 10,
+                                ),
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
@@ -321,12 +335,10 @@ class _HomePageState extends State<HomePage> {
                                         fit: BoxFit.cover,
                                         height: height * 0.15,
                                         width: width * 0.25,
-                                        placeholder: (context, url) =>
-                                            Container(
+                                        placeholder: (context, url) => Container(
                                           child: spinKit2,
                                         ),
-                                        errorWidget: (context, url, error) =>
-                                            const Icon(
+                                        errorWidget: (context, url, error) => const Icon(
                                           Icons.error_outline,
                                           color: Colors.red,
                                         ),
@@ -334,13 +346,12 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                     Expanded(
                                       child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 10),
+                                        padding: const EdgeInsets.symmetric(horizontal: 10),
                                         child: SizedBox(
                                           height: height * 0.15,
                                           child: Column(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceBetween,
                                             children: [
                                               Flexible(
                                                 child: Center(
@@ -349,27 +360,33 @@ class _HomePageState extends State<HomePage> {
                                                         .articles![index].title
                                                         .toString(),
                                                     style: GoogleFonts.aBeeZee(
-                                                      fontSize: 17,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.white,
                                                     ),
                                                   ),
                                                 ),
                                               ),
                                               Row(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
+                                                MainAxisAlignment.spaceBetween,
                                                 children: [
-                                                  Text(snapshot
-                                                      .data!
-                                                      .articles![index]
-                                                      .source!
-                                                      .name
-                                                      .toString()),
+                                                  Text(
+                                                    snapshot.data!.articles![index].source!
+                                                        .name
+                                                        .toString(),
+                                                    style:  TextStyle(
+                                                      color: Colors.red.shade800,
+                                                    ),
+                                                  ),
                                                   Flexible(
-                                                      child: Text(format
-                                                          .format(dateTime))),
+                                                    child: Text(
+                                                      format.format(dateTime),
+                                                      style: const TextStyle(
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
                                                 ],
                                               ),
                                             ],
@@ -380,12 +397,22 @@ class _HomePageState extends State<HomePage> {
                                   ],
                                 ),
                               ),
-                            );
-                          });
-                    }
-                  }),
+                            ),
+                            const Divider(
+                              color: Colors.white,
+                              thickness: .3,
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                },
+              ),
             ),
           ),
+
+
         ],
       ),
     );

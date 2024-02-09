@@ -32,6 +32,7 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
     //DateTime dateTime = DateTime.parse(widget.publishedAt!);
 
     return  Scaffold(
+      backgroundColor: Colors.black12,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -44,100 +45,111 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
               color: Colors.grey[600],
             )),
       ),
-      body: Stack(
-        children: [
-          SizedBox(
-            // padding: EdgeInsets.symmetric(horizontal: Kheight * 0.02),
-            height: Kheight * 0.45,
-            width: Kwidth,
-            child: ClipRRect(
-              borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  topRight: Radius.circular(10)),
-              child: CachedNetworkImage(
-                imageUrl: "${widget.urlToImage}",
-                fit: BoxFit.cover,
-                placeholder: (context, url) =>const  CircularProgressIndicator(),
-                errorWidget: (context, url, error) =>  const Icon(Icons.error),
-              ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: Kheight * 0.4),
-            padding: const EdgeInsets.only(top: 15, right: 15, left: 15),
-            height: Kheight * 0.6,
-            decoration:const  BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20))),
-            child: ListView(
-              children: [
-                Text('${widget.newsName}',
-                    style: GoogleFonts.poppins(
-                        fontSize: 20,
-                        color: Colors.black87,
-                        fontWeight: FontWeight.w700)),
-                SizedBox(height: Kheight * 0.02),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        '${widget.title}',
-                        softWrap: true,
-                        overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.poppins(
-                            fontSize: 13,
-                            color: Colors.blueAccent,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    Text(
-                      widget.publishedAt!,
-                      softWrap: true,
-                      overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          color: Colors.black87,
-                          fontWeight: FontWeight.w500),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: Kheight * 0.05,
-                ),
-                Text('Author:  ${widget.author}',
-                    style: GoogleFonts.poppins(
-                        fontSize: 15,
-                        color: Colors.black87,
-                        fontWeight: FontWeight.w500)),
 
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const Divider(
+              thickness: .3,
+              color: Colors.white,
+            ),
+            Stack(
+              children: [
                 SizedBox(
-                  height: Kheight * 0.05,
+                  // padding: EdgeInsets.symmetric(horizontal: Kheight * 0.02),
+                  height: Kheight * 0.45,
+                  width: Kwidth,
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10)),
+                    child: CachedNetworkImage(
+                      imageUrl: "${widget.urlToImage}",
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) =>const  CircularProgressIndicator(),
+                      errorWidget: (context, url, error) =>  const Icon(Icons.error),
+                    ),
+                  ),
                 ),
-                Text('${widget.description}',
-                    style: GoogleFonts.poppins(
-                        fontSize: 15,
-                        color: Colors.black87,
-                        fontWeight: FontWeight.w500)),
-                SizedBox(
-                  height: Kheight * 0.03,
-                ),
-                Text(widget.content.toString(),
-                    maxLines: 100,
-                    style: GoogleFonts.poppins(
-                        fontSize: 15,
-                        color: Colors.black87,
-                        fontWeight: FontWeight.w500)),
-                SizedBox(
-                  height: Kheight * 0.03,
-                ),
+                Container(
+                  margin: EdgeInsets.only(top: Kheight * 0.4),
+                  padding: const EdgeInsets.only(top: 15, right: 15, left: 15),
+                  height: Kheight * 0.6,
+                  decoration:const  BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20))),
+                  child: ListView(
+                    children: [
+                      Text('${widget.newsName}',
+                          style: GoogleFonts.poppins(
+                              fontSize: 20,
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w700)),
+                      SizedBox(height: Kheight * 0.02),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              '${widget.title}',
+                              softWrap: true,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.poppins(
+                                  fontSize: 13,
+                                  color: Colors.blueAccent,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          Text(
+                            widget.publishedAt!,
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.poppins(
+                                fontSize: 12,
+                                color: Colors.black87,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: Kheight * 0.05,
+                      ),
+                      Text('Author:  ${widget.author}',
+                          style: GoogleFonts.poppins(
+                              fontSize: 15,
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w500)),
+
+                      SizedBox(
+                        height: Kheight * 0.05,
+                      ),
+                      Text('${widget.description}',
+                          style: GoogleFonts.poppins(
+                              fontSize: 15,
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w500)),
+                      SizedBox(
+                        height: Kheight * 0.03,
+                      ),
+                      Text(widget.content.toString(),
+                          maxLines: 100,
+                          style: GoogleFonts.poppins(
+                              fontSize: 15,
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w500)),
+                      SizedBox(
+                        height: Kheight * 0.03,
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
-          )
-        ],
-      ),
+          ],
+        ),
+      )
     );
   }
 }
