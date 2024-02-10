@@ -26,22 +26,24 @@ class _SplashScreenState extends State<SplashScreen> {
     final width=MediaQuery.sizeOf(context).width*1;
     return Scaffold(
       backgroundColor: Colors.grey[100],
-      body: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset('assets/images/splash_pic.jpg',fit: BoxFit.cover,
-              height: height*0.5,
-            ),
-            SizedBox(height: height*0.04,),
-            Text('TOP HEADLINES',style: GoogleFonts.anton(letterSpacing: .6,color: Colors.grey.shade700),),
-            SizedBox(height: height*0.04,),
-            const SpinKitChasingDots(
-              color: Colors.blue,
-              size: 48,
-            ),
-          ],
-        ),
+      body: Stack(
+        children: [
+          Image.asset('assets/images/news_splash.jpg',fit: BoxFit.cover,
+             height: double.infinity,
+          ),
+          Positioned(
+            top: 650,
+            left: 150,
+            child: Text('TOP HEADLINES',style: GoogleFonts.anton(
+              fontSize: 20,
+                letterSpacing: .6,color: Colors.black),),
+          ),
+          SizedBox(height: height*0.04,),
+          const SpinKitChasingDots(
+            color: Colors.blue,
+            size: 45,
+          ),
+        ],
       ),
     );
   }

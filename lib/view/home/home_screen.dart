@@ -117,10 +117,6 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Column(
         children: [
-          // const Divider(
-          //   thickness: .3,
-          //   color: Colors.white,
-          // ),
           SizedBox(
             height: height * 0.3,
             child: FutureBuilder<NewsChannelHeadlinesModel>(
@@ -423,3 +419,4 @@ const spinKit2 = SpinKitFadingCircle(
   color: Colors.amber,
   size: 40,
 );
+
